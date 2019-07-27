@@ -14,22 +14,28 @@ import dagger.android.support.AndroidSupportInjectionModule;
 // when creating a component class with dagger, annotate it with @Component. This tells the code gen this class is labeled as a component.
 // extends AndroidInjector<BaseApplication> b/c this app uses the Android specific Dagger dependencies. Cuts out a bunch of code (manual injection methods, interfaces, etc.).
 
-
+// provide the component all of your builder modules
 @Component(
         modules = {
                 // if using convenience classes, only have to declare once, within the app level component
                 AndroidSupportInjectionModule.class,
+                ActivityBuildersModule.class,
+                AppModule.class,
         }
 )
 public interface AppComponent extends AndroidInjector<BaseApplication> {
 
+    // ** Remember: client service client service client service. AppComponent is the server of BaseApplication.
+
     // ** AndroidInjector is a convenience class
     // think of this app component class as a service and the base application class as a client.
+
+
 
     @Component.Builder
     interface Builder{
 
-        // use to bind an object to the component at the time of its construction
+        // use to bind an object to the component at the time of AppComponent construction
         @BindsInstance
         Builder application(Application application);
 

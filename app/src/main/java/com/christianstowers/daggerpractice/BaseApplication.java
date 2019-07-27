@@ -7,6 +7,8 @@ import dagger.android.support.DaggerApplication;
 
 public class BaseApplication extends DaggerApplication {
 
+    // ** Remember: client service client service client service. BaseApplication is a client of AppComponent.
+
     // ** DaggerApplication is a convenience class
 
     // returns app component
