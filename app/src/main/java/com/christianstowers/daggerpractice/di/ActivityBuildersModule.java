@@ -3,7 +3,6 @@ package com.christianstowers.daggerpractice.di;
 import com.christianstowers.daggerpractice.AuthActivity;
 
 import dagger.Module;
-import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 
 // builder modules are places for dependencies to live and then add to components
