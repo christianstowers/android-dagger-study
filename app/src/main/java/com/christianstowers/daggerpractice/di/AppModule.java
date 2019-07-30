@@ -9,11 +9,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.christianstowers.daggerpractice.R;
+import com.christianstowers.daggerpractice.util.Constants;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class AppModule {
@@ -34,6 +37,16 @@ public class AppModule {
 //        return application == null;
 //    }
 
+
+    //** retrofit instance/object declared in the AppModule b/c it will exist throughout the app lifetime
+    @Singleton
+    @Provides
+    static Retrofit provideRetrofitInstance() {
+        return new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
 
     //TODO : remember!!: these dependencies are scoped to the same scope of AppComponent b/c these dependencies are passed as a module (AppModule) to AppComponent.
 

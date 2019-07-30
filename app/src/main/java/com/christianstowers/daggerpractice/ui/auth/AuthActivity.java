@@ -1,6 +1,7 @@
-package com.christianstowers.daggerpractice;
+package com.christianstowers.daggerpractice.ui.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
+import com.christianstowers.daggerpractice.R;
+import com.christianstowers.daggerpractice.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
@@ -20,6 +23,12 @@ import dagger.android.support.DaggerAppCompatActivity;
 public class AuthActivity extends DaggerAppCompatActivity {
 
     private static final String TAG = "AuthActivity";
+
+    private AuthViewModel viewModel;
+
+    @Inject
+    ViewModelProviderFactory providerFactory;
+
 
     // Demonstration Injections
 //    @Inject
@@ -36,6 +45,9 @@ public class AuthActivity extends DaggerAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        // instantiate viewModel
+        viewModel = ViewModelProviders.of(this, providerFactory).get(AuthViewModel.class);
 
         //Demonstration Injection Logs
 //        Log.d(TAG, "onCreate: " + testytest);
