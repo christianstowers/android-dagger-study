@@ -4,9 +4,14 @@ import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
+import com.christianstowers.daggerpractice.models.User;
 import com.christianstowers.daggerpractice.network.auth.AuthAPI;
 
 import javax.inject.Inject;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -20,12 +25,31 @@ public class AuthViewModel extends ViewModel {
     @Inject
     public AuthViewModel(AuthAPI authAPI) {
         this.authAPI = authAPI;
-        Log.d(TAG, "AuthViewModel: viewmodel is working!!! >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//        Log.d(TAG, "AuthViewModel: viewmodel is working!!! >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-        if(this.authAPI == null){
-            Log.d(TAG, "AuthViewModel: auth api is NULL.");
-        } else {
-            Log.d(TAG, "AuthViewModel: auth api is not NULL.");
-        }
+        authAPI.getUser(1)
+                .toObservable()
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<User>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+                        Log.d(TAG, "onNext: " + user.getUsername() + " " + user.getEmail() + " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: ", e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }
