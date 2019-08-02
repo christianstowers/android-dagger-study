@@ -65,7 +65,7 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
 
     // on activity creation, starts observing the live data through the public LiveData<User> observeUser() method
     private void subscribeObservers(){
-        viewModel.observeUser().observe(this, new Observer<AuthResource<User>>() {
+        viewModel.observeAuthState().observe(this, new Observer<AuthResource<User>>() {
             @Override
             public void onChanged(AuthResource<User> userAuthResource) {
                 if(userAuthResource != null){

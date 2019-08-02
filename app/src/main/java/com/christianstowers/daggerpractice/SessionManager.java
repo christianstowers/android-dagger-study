@@ -13,6 +13,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 
+//TODO: SESSION MANAGER: THE SINGLE SOURCE OF TRUTH
+
 // this will take over management of the authenticated user, which was originally
 // handled by AuthViewModel:  private MediatorLiveData<AuthResource<User>> authUser = new MediatorLiveData<>();
 // also, all of the setting of the authenticated user will be handled here as well.

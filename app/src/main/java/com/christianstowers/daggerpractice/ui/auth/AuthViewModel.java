@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
+
+import com.christianstowers.daggerpractice.SessionManager;
 import com.christianstowers.daggerpractice.models.User;
 import com.christianstowers.daggerpractice.network.auth.AuthAPI;
 import javax.inject.Inject;
@@ -20,24 +22,25 @@ public class AuthViewModel extends ViewModel {
 
     // inject
     private final AuthAPI authAPI;
-
-    //TODO: watch tuts on REST API / Live Data stuff: REST API with MVVM and Retrofit2; Local Database Cache with REST API
-    private MediatorLiveData<AuthResource<User>> authUser = new MediatorLiveData<>();
+    private SessionManager sessionManager;
 
     @Inject
-    public AuthViewModel(AuthAPI authAPI) {
+    public AuthViewModel(AuthAPI authAPI, SessionManager sessionManager) {
         this.authAPI = authAPI;
+        this.sessionManager = sessionManager;
         Log.d(TAG, "AuthViewModel: viewmodel is working...");
     }
 
     public void authenticateWithId(int userId){
-        authUser.setValue(AuthResource.loading((User)null));
+        Log.d(TAG, "authenticateWithId: attempting to log in...");
+        sessionManager.authenticateWithId(queryUserId(userId));
+    }
+    // only responsible for querying the user id. if error, returns error. if not, returns AuthResource authenticated user object.
+    private LiveData<AuthResource<User>> queryUserId(int userId){
 
-        // responsible for doing the api call, returns a live data object
-        final LiveData<AuthResource<User>> source = LiveDataReactiveStreams.fromPublisher(
+        // returns flowable User object
+        return LiveDataReactiveStreams.fromPublisher(authAPI.getUser(userId)
 
-                // returns flowable User object
-                authAPI.getUser(userId)
                         //instead of calling onError (error happens)
                         .onErrorReturn(new Function<Throwable, User>() {
                             @Override
@@ -47,6 +50,7 @@ public class AuthViewModel extends ViewModel {
                                 return errorUser;
                             }
                         })
+
                         // either receives errorUser if there was an error or returns the User object
                         // from the API and then applies a function to it using the map operator.
                         // If the user id is -1 or an error, returns an AuthResource object of type
@@ -66,21 +70,10 @@ public class AuthViewModel extends ViewModel {
                         })
 
                         .subscribeOn(Schedulers.io()));
-
-        // returns the data using an RXJava call, converts to live data, sets to mediator live data, and updates observers using the setValue method
-        authUser.addSource(source, new Observer<AuthResource<User>>() {
-            @Override
-            public void onChanged(AuthResource<User> user) {
-                // if the user is authenticated successfully, the value of that user will get set to the authUser mediator live data object,
-                // the observers will be immediately updated and the onChanged method will print out that user.
-                authUser.setValue(user);
-                authUser.removeSource(source);
-            }
-        });
     }
 
     // on creation of AuthActivity, starts observing the live data via this method
-    public LiveData<AuthResource<User>> observeUser(){
-        return authUser;
+    public LiveData<AuthResource<User>> observeAuthState(){
+        return sessionManager.getAuthUser();
     }
 }
