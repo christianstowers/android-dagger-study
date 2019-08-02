@@ -4,6 +4,7 @@ package com.christianstowers.daggerpractice.di;
 import android.app.Application;
 
 import com.christianstowers.daggerpractice.BaseApplication;
+import com.christianstowers.daggerpractice.SessionManager;
 
 import javax.inject.Singleton;
 
@@ -36,6 +37,7 @@ public interface AppComponent extends AndroidInjector<BaseApplication> {
     // think of this app component class as a service and the base application class as a client.
 
 
+    SessionManager sessionManager();
 
     @Component.Builder
     interface Builder{
