@@ -14,10 +14,13 @@ import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 
 
-@Singleton // lets Dagger know that this component is going to be scoped to an application-wide Singleton aka persists across the entire lifetime of the application
+@Singleton // lets Dagger know that this component is going to be scoped to an
+// application-wide Singleton aka persists across the entire lifetime of the application
 
-// when creating a component class with dagger, annotate it with @Component. This tells the code gen this class is labeled as a component.
-// extends AndroidInjector<BaseApplication> b/c this app uses the Android specific Dagger dependencies. Cuts out a bunch of code (manual injection methods, interfaces, etc.).
+// when creating a component class with dagger, annotate it with @Component. This tells
+// the code gen this class is labeled as a component.
+// extends AndroidInjector<BaseApplication> b/c this app uses the Android specific Dagger
+// dependencies. Cuts out a bunch of code (manual injection methods, interfaces, etc.).
 
 // provide the component all of your builder modules
 @Component(

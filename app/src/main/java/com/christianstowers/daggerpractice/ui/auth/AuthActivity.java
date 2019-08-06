@@ -49,6 +49,10 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        Log.d(TAG, "onCreate: " + logo + " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+
         userId = findViewById(R.id.user_id_input);
         progressBar = findViewById(R.id.progress_bar);
 

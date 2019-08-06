@@ -2,6 +2,7 @@ package com.christianstowers.daggerpractice.di;
 
 import com.christianstowers.daggerpractice.di.auth.AuthModule;
 import com.christianstowers.daggerpractice.di.auth.AuthViewModelsModule;
+import com.christianstowers.daggerpractice.di.main.MainFragmentBuildersModule;
 import com.christianstowers.daggerpractice.ui.auth.AuthActivity;
 import com.christianstowers.daggerpractice.ui.main.MainActivity;
 
@@ -21,10 +22,10 @@ public abstract class ActivityBuildersModule {
     // creates AuthActivity subcomponent
     abstract AuthActivity contributeAuthActivity();
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(
+            modules = {MainFragmentBuildersModule.class}
+    )
     // creates MainActivity subcomponent
     abstract MainActivity contributeMainActivity();
-
-
 
 }
