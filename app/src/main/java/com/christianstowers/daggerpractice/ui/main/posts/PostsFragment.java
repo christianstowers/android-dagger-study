@@ -1,17 +1,23 @@
 package com.christianstowers.daggerpractice.ui.main.posts;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.christianstowers.daggerpractice.R;
+import com.christianstowers.daggerpractice.models.Post;
+import com.christianstowers.daggerpractice.ui.main.Resource;
 import com.christianstowers.daggerpractice.viewmodels.ViewModelProviderFactory;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -39,5 +45,18 @@ public class PostsFragment extends DaggerFragment {
 
         // instantiate the viewmodel
         viewModel = ViewModelProviders.of(this, providerFactory).get(PostsViewModel.class);
+
+        subscribeObservers();
+    }
+
+    private void subscribeObservers(){
+        viewModel.observePosts().removeObservers(getViewLifecycleOwner());
+        viewModel.observePosts().observe(getViewLifecycleOwner(), new Observer<Resource<List<Post>>>() {
+            @Override
+            public void onChanged(Resource<List<Post>> listResource) {
+                Log.d(TAG, "onChanged: " + listResource.data + " >>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            }
+        });
     }
 }
